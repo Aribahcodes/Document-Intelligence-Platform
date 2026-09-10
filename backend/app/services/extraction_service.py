@@ -46,7 +46,11 @@ Rules:
    totals, and every financial line visible, for every period/column shown.
 2. The minimum fields that MUST be attempted for this document type are: {minimum_fields}
 3. If a value is not present in the text, its "value" must be null. NEVER invent, guess,
-   or infer a number or label that is not actually supported by the document text.
+   or infer a number or label that is not actually supported by the document text. HOWEVER,
+   if a field's row IS present but shows a dash/hyphen ("-") instead of a number - a common
+   convention in financial statements for a nil/zero amount - extract that as the number 0,
+   NOT as null. Null means "this field does not appear in the document at all"; 0 means "this
+   field appears and is explicitly zero."
 4. For every extracted field, include the page_number it came from and a short verbatim
    source_text snippet (max ~15 words) copied from the document that supports the value.
 5. NUMBER FORMATTING - read carefully, this document may use either convention:
