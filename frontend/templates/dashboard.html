@@ -2,48 +2,64 @@
 {% block title %}Dashboard - Document Intelligence{% endblock %}
 {% block content %}
 
-<section class="panel">
-  <h1>Process a document</h1>
-  <form id="upload-form">
-    <div class="field-row">
-      <label for="document_type">Document type</label>
-      <select id="document_type" name="document_type" required>
-        <option value="invoice">Invoice</option>
-        <option value="balance_sheet">Balance Sheet</option>
-        <option value="profit_and_loss">Profit &amp; Loss</option>
-        <option value="cash_flow_statement">Cash Flow Statement</option>
-      </select>
-    </div>
-    <div class="field-row">
-      <label for="file">File (PDF / JPG / PNG, up to 3 pages)</label>
-      <input type="file" id="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required />
-    </div>
-    <button type="submit" id="process-btn">Process document</button>
-  </form>
-  <div id="upload-status" class="status-msg"></div>
-</section>
-
-<section class="panel">
-  <div class="panel-header">
-    <h2>Processed documents</h2>
-    <button id="refresh-btn" class="secondary" type="button">Refresh</button>
+<div class="card mb-4">
+  <div class="card-body">
+    <h1 class="card-title h4 mb-3">Process a document</h1>
+    <form method="POST" action="{{ url_for('frontend.dashboard') }}" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="document_type" class="form-label">Document type</label>
+        <select class="form-select" id="document_type" name="document_type" required>
+          <option value="invoice">Invoice</option>
+          <option value="balance_sheet">Balance Sheet</option>
+          <option value="profit_and_loss">Profit &amp; Loss</option>
+          <option value="cash_flow_statement">Cash Flow Statement</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="file" class="form-label">File (PDF / JPG / PNG, up to 3 pages)</label>
+        <input class="form-control" type="file" id="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Process document</button>
+    </form>
   </div>
-  <table class="doc-table">
-    <thead>
-      <tr>
-        <th>Document name</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Processed at</th>
-      </tr>
-    </thead>
-    <tbody id="doc-table-body">
-      <tr><td colspan="4" class="empty-row">Loading...</td></tr>
-    </tbody>
-  </table>
-</section>
+</div>
 
-{% endblock %}
-{% block scripts %}
-<script src="{{ url_for('frontend.static', filename='js/dashboard.js') }}"></script>
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h5 mb-0">Processed documents</h2>
+      <a href="{{ url_for('frontend.dashboard') }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
+    </div>
+
+    {% if documents %}
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Document name</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Processed at</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doc in documents %}
+        <tr>
+          <td>
+            <a href="{{ url_for('frontend.document_result', document_name=doc.document_name) }}">
+              {{ doc.document_name }}
+            </a>
+          </td>
+          <td>{{ doc.document_type }}</td>
+          <td><span class="badge status-{{ doc.processing_status }}">{{ doc.processing_status }}</span></td>
+          <td>{{ doc.processed_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">No documents processed yet. Upload one above to get started.</p>
+    {% endif %}
+  </div>
+</div>
+
 {% endblock %}
