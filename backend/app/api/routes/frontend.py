@@ -64,4 +64,20 @@ def document_result(document_name):
     if result is None:
         flash(f'No processed result found for "{document_name}".', "warning")
         return redirect(url_for("frontend.dashboard"))
-    return render_template("document_result.html", result=result)
+
+    # Line items have different columns per document type (invoice vs. the
+    # HDFC statement types) - compute the ordered, de-duplicated column list
+    # here in Python rather than in the template, so document_result.html
+    # only has to loop over a plain list of column names.
+    line_items = result.get("line_items") or []
+    line_item_columns = []
+    for item in line_items:
+        for key in item.keys():
+            if key not in line_item_columns:
+                line_item_columns.append(key)
+
+    return render_template(
+        "document_result.html",
+        result=result,
+        line_item_columns=line_item_columns,
+    )
