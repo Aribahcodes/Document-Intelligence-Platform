@@ -15,6 +15,9 @@ backend/data/
 *.db
 *.sqlite3
 
+# Local sample dataset (not part of the submitted source code)
+/data/
+
 # OS / editor
 .DS_Store
 .vscode/
