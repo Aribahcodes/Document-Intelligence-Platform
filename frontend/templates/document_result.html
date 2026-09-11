@@ -1,16 +1,156 @@
 ﻿{% extends "base.html" %}
-{% block title %}{{ document_name }} - Document Intelligence{% endblock %}
+{% block title %}{{ result.document_name }} - Document Intelligence{% endblock %}
 {% block content %}
 
-<a class="back-link" href="{{ url_for('frontend.dashboard') }}">&larr; Back to dashboard</a>
+<a href="{{ url_for('frontend.dashboard') }}" class="d-inline-block mb-3">&larr; Back to dashboard</a>
 
-<section class="panel">
-  <div id="result-root" data-document-name="{{ document_name }}">
-    <p class="empty-row">Loading result...</p>
+<div class="d-flex justify-content-between align-items-start mb-1">
+  <h1 class="h3">{{ result.document_name }}</h1>
+  <span class="badge status-{{ result.processing_status }} fs-6">{{ result.processing_status }}</span>
+</div>
+<p class="text-muted">
+  {{ result.document_type }}
+  {% if result.processing_metadata %}
+    &middot; processed {{ result.processing_metadata.processed_at }}
+    {% if result.processing_metadata.ocr_used %}&middot; OCR used{% endif %}
+  {% endif %}
+</p>
+
+{% if result.file_validation %}
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="h6 mb-3">File validation</h2>
+    <table class="table table-sm mb-0">
+      <tbody>
+        {% for key, value in result.file_validation.items() %}
+        <tr>
+          <td class="text-muted" style="width: 34%">{{ key }}</td>
+          <td class="font-monospace">{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-</section>
+</div>
+{% endif %}
 
-{% endblock %}
-{% block scripts %}
-<script src="{{ url_for('frontend.static', filename='js/result.js') }}"></script>
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="h6 mb-3">Extracted fields</h2>
+    {% if result.extracted_data %}
+    <table class="table table-sm mb-0">
+      <tbody>
+        {% for field, info in result.extracted_data.items() %}
+        <tr class="{{ 'text-muted fst-italic' if info.value is none else '' }}">
+          <td class="text-muted" style="width: 34%">{{ field }}</td>
+          <td class="font-monospace">
+            {% if info.value is none %}
+              null (not found in document)
+            {% else %}
+              {{ info.value }}
+            {% endif %}
+            {% if info.source_text %}
+              <small class="d-block text-muted fst-normal">
+                "{{ info.source_text }}"{% if info.page_number %} - page {{ info.page_number }}{% endif %}
+              </small>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">No fields extracted.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% if result.line_items %}
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="h6 mb-3">Line items</h2>
+    <div class="table-responsive">
+      <table class="table table-sm table-striped mb-0">
+        <thead>
+          <tr>
+            {% for col in line_item_columns %}
+            <th>{{ col }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in result.line_items %}
+          <tr>
+            {% for col in line_item_columns %}
+            <td class="font-monospace">{{ item.get(col, '-') if item.get(col, None) is not none else '-' }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 class="h6 mb-3">
+      Financial validation
+      {% if result.validation %}
+      <span class="badge status-{{ result.validation.overall_status }}">{{ result.validation.overall_status }}</span>
+      {% endif %}
+    </h2>
+
+    {% if result.validation and result.validation.checks %}
+    <div class="table-responsive">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>Formula</th>
+            <th>Calculated</th>
+            <th>Reported</th>
+            <th>Variance</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for check in result.validation.checks %}
+          <tr class="{{ 'table-danger' if check.status == 'FAIL' else '' }}">
+            <td>{{ check.name }}</td>
+            <td class="font-monospace small">{{ check.formula }}</td>
+            <td class="font-monospace">{{ check.calculated_value if check.calculated_value is not none else '-' }}</td>
+            <td class="font-monospace">{{ check.reported_value if check.reported_value is not none else '-' }}</td>
+            <td class="font-monospace">{{ check.variance if check.variance is not none else '-' }}</td>
+            <td><span class="badge status-{{ check.status }}">{{ check.status }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if result.validation.issues %}
+    <ul class="text-danger mt-3 mb-0">
+      {% for issue in result.validation.issues %}
+      <li>{{ issue }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% else %}
+    <p class="text-muted mb-0">No applicable validation checks for this document.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="mb-5">
+  <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#rawJson">
+    View raw JSON
+  </button>
+  <div class="collapse mt-2" id="rawJson">
+    <pre class="bg-dark text-light p-3 rounded"><code>{{ result | tojson(indent=2) }}</code></pre>
+  </div>
+</div>
+
 {% endblock %}
