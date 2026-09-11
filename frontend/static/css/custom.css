@@ -1,0 +1,22 @@
+﻿/*
+Small, deliberately minimal stylesheet - Bootstrap (loaded via CDN in
+base.html) handles almost everything. This file exists only for the
+one thing Bootstrap has no built-in concept of: our four processing/
+validation status values (PASS, FAIL, FAILED, NOT_APPLICABLE).
+*/
+
+.badge.status-PASS {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.badge.status-FAIL,
+.badge.status-FAILED {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.badge.status-NOT_APPLICABLE {
+  background-color: #e2e3e5;
+  color: #41464b;
+}
