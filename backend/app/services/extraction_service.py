@@ -134,7 +134,15 @@ def _call_gemini_with_retry(prompt: str, full_text: str) -> str:
             )
             return response.text
 
-        except genai_errors.ServerError as exc:
+        # google-genai raises ClientError for ANY 4xx (including 429 rate
+        # limiting) and ServerError for any 5xx - per its own source
+        # (errors.py raise_error()). 429 is a genuinely transient,
+        # worth-retrying condition despite being a "client" error in HTTP
+        # terms, so both exception types are handled here and filtered by
+        # the same _RETRYABLE_CODES set; a ClientError for anything else
+        # (401 bad key, 400 malformed request, etc.) still falls straight
+        # through to "not retryable" on the first attempt.
+        except (genai_errors.ServerError, genai_errors.ClientError) as exc:
             last_exc = exc
             if exc.code not in _RETRYABLE_CODES or attempt == _MAX_ATTEMPTS:
                 logger.error("Gemini extraction call failed (attempt %d/%d, non-retryable or exhausted): %s",
@@ -146,9 +154,8 @@ def _call_gemini_with_retry(prompt: str, full_text: str) -> str:
             time.sleep(wait)
 
         except Exception as exc:
-            # non-ServerError failures (bad key, network issue, malformed
-            # request, etc.) are never retried - they won't succeed on a
-            # second attempt
+            # anything that isn't a ClientError/ServerError at all (network
+            # issue, unexpected SDK failure, etc.) is never retried
             last_exc = exc
             logger.error("Gemini extraction call failed (non-retryable): %s", exc)
             break
