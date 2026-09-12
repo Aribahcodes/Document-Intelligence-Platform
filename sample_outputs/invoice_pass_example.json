@@ -1,0 +1,114 @@
+{
+  "document_name": "sample_invoice.pdf",
+  "document_type": "invoice",
+  "processing_status": "PASS",
+  "file_validation": {
+    "file_type": "application/pdf",
+    "is_supported": true,
+    "is_readable": true,
+    "page_count": 1,
+    "status": "PASS"
+  },
+  "extracted_data": {
+    "invoice_number": {
+      "value": "INV-23891",
+      "page_number": 1,
+      "source_text": "Invoice Number: INV-23891"
+    },
+    "invoice_date": {
+      "value": "2026-08-15",
+      "page_number": 1,
+      "source_text": "Invoice Date: 15 Aug 2026"
+    },
+    "vendor_name": {
+      "value": "ABC Technologies",
+      "page_number": 1,
+      "source_text": "Vendor: ABC Technologies"
+    },
+    "customer_name": {
+      "value": "Test Client Pvt Ltd",
+      "page_number": 1,
+      "source_text": "Customer: Test Client Pvt Ltd"
+    },
+    "currency": {
+      "value": "USD",
+      "page_number": 1,
+      "source_text": "Currency: USD"
+    },
+    "subtotal": {
+      "value": 12500.0,
+      "page_number": 1,
+      "source_text": "Subtotal: 12,500.00"
+    },
+    "tax_amount": {
+      "value": 625.0,
+      "page_number": 1,
+      "source_text": "Tax (5%): 625.00"
+    },
+    "discount": {
+      "value": 0.0,
+      "page_number": 1,
+      "source_text": null
+    },
+    "total_amount": {
+      "value": 13125.0,
+      "page_number": 1,
+      "source_text": "Total Amount Due: USD 13,125.00"
+    }
+  },
+  "line_items": [
+    {
+      "description": "Service A - Cloud Infrastructure Setup",
+      "quantity": 1,
+      "unit_price": 12500.0,
+      "amount": 12500.0
+    }
+  ],
+  "validation": {
+    "checks": [
+      {
+        "name": "invoice_total_check",
+        "formula": "subtotal + tax_amount - discount",
+        "operands": {
+          "subtotal": 12500.0,
+          "tax_amount": 625.0,
+          "discount": 0.0
+        },
+        "calculated_value": 13125.0,
+        "reported_value": 13125.0,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "line_items_sum_check",
+        "formula": "sum(line_items.amount)",
+        "operands": {
+          "line_item_count": 1
+        },
+        "calculated_value": 12500.0,
+        "reported_value": 12500.0,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "line_item_1_quantity_check",
+        "formula": "quantity * unit_price",
+        "operands": {
+          "quantity": 1,
+          "unit_price": 12500.0
+        },
+        "calculated_value": 12500.0,
+        "reported_value": 12500.0,
+        "variance": 0.0,
+        "status": "PASS"
+      }
+    ],
+    "overall_status": "PASS",
+    "issues": []
+  },
+  "processing_metadata": {
+    "ocr_used": false,
+    "processed_at": "2026-09-12T01:28:17.050752+00:00",
+    "processing_time_ms": 8
+  }
+}

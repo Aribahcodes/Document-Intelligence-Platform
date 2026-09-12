@@ -1,0 +1,118 @@
+{
+  "document_name": "receipt_validation_failure.pdf",
+  "document_type": "invoice",
+  "processing_status": "PASS",
+  "file_validation": {
+    "file_type": "application/pdf",
+    "is_supported": true,
+    "is_readable": true,
+    "page_count": 1,
+    "status": "PASS"
+  },
+  "extracted_data": {
+    "invoice_number": {
+      "value": "INV-88213",
+      "page_number": 1,
+      "source_text": "Invoice No: INV-88213"
+    },
+    "invoice_date": {
+      "value": "2026-07-02",
+      "page_number": 1,
+      "source_text": "Date: 02/07/2026"
+    },
+    "vendor_name": {
+      "value": "Fuyi Mini Market",
+      "page_number": 1,
+      "source_text": "FUYI MINI MARKET"
+    },
+    "customer_name": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "currency": {
+      "value": "MYR",
+      "page_number": 1,
+      "source_text": "GST No.: 001601310720"
+    },
+    "subtotal": {
+      "value": 8.49,
+      "page_number": 1,
+      "source_text": "SR 8.49"
+    },
+    "tax_amount": {
+      "value": 0.51,
+      "page_number": 1,
+      "source_text": "GST 6% + 0.51"
+    },
+    "discount": {
+      "value": 0.0,
+      "page_number": 1,
+      "source_text": null
+    },
+    "total_amount": {
+      "value": 12.0,
+      "page_number": 1,
+      "source_text": "Total Includes GST 6%: 12.00"
+    }
+  },
+  "line_items": [
+    {
+      "description": "013 SUMMER CUP 48X230ML",
+      "quantity": 1,
+      "unit_price": 8.49,
+      "amount": 9.0
+    }
+  ],
+  "validation": {
+    "checks": [
+      {
+        "name": "invoice_total_check",
+        "formula": "subtotal + tax_amount - discount",
+        "operands": {
+          "subtotal": 8.49,
+          "tax_amount": 0.51,
+          "discount": 0.0
+        },
+        "calculated_value": 9.0,
+        "reported_value": 12.0,
+        "variance": -3.0,
+        "status": "FAIL"
+      },
+      {
+        "name": "line_items_sum_check",
+        "formula": "sum(line_items.amount)",
+        "operands": {
+          "line_item_count": 1
+        },
+        "calculated_value": 9.0,
+        "reported_value": 8.49,
+        "variance": 0.51,
+        "status": "FAIL"
+      },
+      {
+        "name": "line_item_1_quantity_check",
+        "formula": "quantity * unit_price",
+        "operands": {
+          "quantity": 1,
+          "unit_price": 8.49
+        },
+        "calculated_value": 8.49,
+        "reported_value": 9.0,
+        "variance": -0.51,
+        "status": "FAIL"
+      }
+    ],
+    "overall_status": "FAIL",
+    "issues": [
+      "invoice_total_check failed: expected 12.0, calculated 9.0",
+      "line_items_sum_check failed: expected 8.49, calculated 9.0",
+      "line_item_1_quantity_check failed: expected 9.0, calculated 8.49"
+    ]
+  },
+  "processing_metadata": {
+    "ocr_used": false,
+    "processed_at": "2026-09-12T01:28:34.387436+00:00",
+    "processing_time_ms": 7
+  }
+}

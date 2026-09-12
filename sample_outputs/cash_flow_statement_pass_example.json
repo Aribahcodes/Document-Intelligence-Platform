@@ -1,0 +1,184 @@
+{
+  "document_name": "Consolidated Cash Flow Statement 2024.pdf",
+  "document_type": "cash_flow_statement",
+  "processing_status": "PASS",
+  "file_validation": {
+    "file_type": "application/pdf",
+    "is_supported": true,
+    "is_readable": true,
+    "page_count": 1,
+    "status": "PASS"
+  },
+  "extracted_data": {
+    "period_current": {
+      "value": "FY2023-24",
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "period_prior": {
+      "value": "FY2022-23",
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "currency_unit": {
+      "value": "INR crore",
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_net_cash_from_operating_activities": {
+      "value": 19069.34,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_net_cash_from_investing_activities": {
+      "value": 5313.77,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_net_cash_from_financing_activities": {
+      "value": -3983.06,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_effect_of_fx_translation": {
+      "value": 104.94,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_net_increase_in_cash": {
+      "value": 20504.99,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_cash_at_beginning": {
+      "value": 197147.81,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_cash_acquired_on_amalgamation": {
+      "value": 11181.71,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_cash_at_end": {
+      "value": 228834.51,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_net_cash_from_operating_activities": {
+      "value": 20813.7,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_net_cash_from_investing_activities": {
+      "value": -3423.89,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_net_cash_from_financing_activities": {
+      "value": 23940.56,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_effect_of_fx_translation": {
+      "value": 431.71,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_net_increase_in_cash": {
+      "value": 41762.08,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_cash_at_beginning": {
+      "value": 155385.73,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_cash_acquired_on_amalgamation": {
+      "value": null,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_cash_at_end": {
+      "value": 197147.81,
+      "page_number": 1,
+      "source_text": "test"
+    }
+  },
+  "line_items": [
+    {
+      "label": "Depreciation on fixed assets",
+      "category": "Operating",
+      "current_value": 3092.08,
+      "prior_value": 2345.47
+    },
+    {
+      "label": "Increase in deposits",
+      "category": "Operating",
+      "current_value": 336964.81,
+      "prior_value": 324660.22
+    }
+  ],
+  "validation": {
+    "checks": [
+      {
+        "name": "current_net_increase_in_cash_check",
+        "formula": "net_cash_from_operating_activities + net_cash_from_investing_activities + net_cash_from_financing_activities + effect_of_fx_translation",
+        "operands": {
+          "net_cash_from_operating_activities": 19069.34,
+          "net_cash_from_investing_activities": 5313.77,
+          "net_cash_from_financing_activities": -3983.06
+        },
+        "calculated_value": 20504.99,
+        "reported_value": 20504.99,
+        "variance": -0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_cash_at_end_check",
+        "formula": "cash_at_beginning + cash_acquired_on_amalgamation + net_increase_in_cash",
+        "operands": {
+          "cash_at_beginning": 197147.81,
+          "net_increase_in_cash": 20504.99
+        },
+        "calculated_value": 228834.51,
+        "reported_value": 228834.51,
+        "variance": -0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_net_increase_in_cash_check",
+        "formula": "net_cash_from_operating_activities + net_cash_from_investing_activities + net_cash_from_financing_activities + effect_of_fx_translation",
+        "operands": {
+          "net_cash_from_operating_activities": 20813.7,
+          "net_cash_from_investing_activities": -3423.89,
+          "net_cash_from_financing_activities": 23940.56
+        },
+        "calculated_value": 41762.08,
+        "reported_value": 41762.08,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_cash_at_end_check",
+        "formula": "cash_at_beginning + cash_acquired_on_amalgamation + net_increase_in_cash",
+        "operands": {
+          "cash_at_beginning": 155385.73,
+          "net_increase_in_cash": 41762.08
+        },
+        "calculated_value": 197147.81,
+        "reported_value": 197147.81,
+        "variance": 0.0,
+        "status": "PASS"
+      }
+    ],
+    "overall_status": "PASS",
+    "issues": []
+  },
+  "processing_metadata": {
+    "ocr_used": true,
+    "processed_at": "2026-09-12T01:28:17.087209+00:00",
+    "processing_time_ms": 1
+  }
+}

@@ -1,0 +1,312 @@
+{
+  "document_name": "Consolidated Balance Sheet 2024.pdf",
+  "document_type": "balance_sheet",
+  "processing_status": "PASS",
+  "file_validation": {
+    "file_type": "application/pdf",
+    "is_supported": true,
+    "is_readable": true,
+    "page_count": 1,
+    "status": "PASS"
+  },
+  "extracted_data": {
+    "period_end_date_current": {
+      "value": "2024-03-31",
+      "page_number": 1,
+      "source_text": "As at March 31, 2024"
+    },
+    "period_end_date_prior": {
+      "value": "2023-03-31",
+      "page_number": 1,
+      "source_text": "As at March 31, 2023"
+    },
+    "currency_unit": {
+      "value": "INR crore",
+      "page_number": 1,
+      "source_text": "Rs. in crore"
+    },
+    "current_capital": {
+      "value": 759.69,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_employees_stock_options": {
+      "value": 2652.72,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_reserves_and_surplus": {
+      "value": 452982.84,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_minority_interest": {
+      "value": 13383.4,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_deposits": {
+      "value": 2376887.28,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_borrowings": {
+      "value": 730615.46,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_other_liabilities_and_provisions": {
+      "value": 174832.07,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_policyholders_funds": {
+      "value": 278080.8,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_total_capital_and_liabilities": {
+      "value": 4030194.26,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_capital": {
+      "value": 557.97,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_employees_stock_options": {
+      "value": 1117.2,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_reserves_and_surplus": {
+      "value": 287762.33,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_minority_interest": {
+      "value": 860.26,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_deposits": {
+      "value": 1882663.25,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_borrowings": {
+      "value": 256548.66,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_other_liabilities_and_provisions": {
+      "value": 100922.77,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_policyholders_funds": {
+      "value": null,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_total_capital_and_liabilities": {
+      "value": 2530432.44,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_cash_and_balances_with_rbi": {
+      "value": 178718.67,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_balances_with_banks_and_money_at_call": {
+      "value": 50115.84,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_investments": {
+      "value": 1005681.63,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_advances": {
+      "value": 2565891.41,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_fixed_assets": {
+      "value": 12603.76,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_other_assets": {
+      "value": 217182.95,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_goodwill_on_consolidation": {
+      "value": null,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_total_assets": {
+      "value": 4030194.26,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_cash_and_balances_with_rbi": {
+      "value": 117189.28,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_balances_with_banks_and_money_at_call": {
+      "value": 79958.53,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_investments": {
+      "value": 511581.71,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_advances": {
+      "value": 1661949.29,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_fixed_assets": {
+      "value": 8282.56,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_other_assets": {
+      "value": 151322.28,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_goodwill_on_consolidation": {
+      "value": 148.79,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_total_assets": {
+      "value": 2530432.44,
+      "page_number": 1,
+      "source_text": "test"
+    }
+  },
+  "line_items": [
+    {
+      "label": "Contingent liabilities",
+      "current_value": 2344487.73,
+      "prior_value": 1750953.81,
+      "page_number": 1
+    },
+    {
+      "label": "Bills for collection",
+      "current_value": 65332.87,
+      "prior_value": 71439.54,
+      "page_number": 1
+    }
+  ],
+  "validation": {
+    "checks": [
+      {
+        "name": "current_capital_and_liabilities_total_check",
+        "formula": "capital + esop + reserves_and_surplus + minority_interest + deposits + borrowings + other_liabilities_and_provisions + policyholders_funds",
+        "operands": {
+          "capital": 759.69,
+          "employees_stock_options": 2652.72,
+          "reserves_and_surplus": 452982.84,
+          "minority_interest": 13383.4,
+          "deposits": 2376887.28,
+          "borrowings": 730615.46,
+          "other_liabilities_and_provisions": 174832.07
+        },
+        "calculated_value": 4030194.26,
+        "reported_value": 4030194.26,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_assets_total_check",
+        "formula": "cash_and_balances_with_rbi + balances_with_banks_and_money_at_call + investments + advances + fixed_assets + other_assets + goodwill_on_consolidation",
+        "operands": {
+          "cash_and_balances_with_rbi": 178718.67,
+          "balances_with_banks_and_money_at_call": 50115.84,
+          "investments": 1005681.63,
+          "advances": 2565891.41,
+          "fixed_assets": 12603.76,
+          "other_assets": 217182.95
+        },
+        "calculated_value": 4030194.26,
+        "reported_value": 4030194.26,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_balance_sheet_equation_check",
+        "formula": "total_capital_and_liabilities == total_assets",
+        "operands": {
+          "total_capital_and_liabilities": 4030194.26
+        },
+        "calculated_value": 4030194.26,
+        "reported_value": 4030194.26,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_capital_and_liabilities_total_check",
+        "formula": "capital + esop + reserves_and_surplus + minority_interest + deposits + borrowings + other_liabilities_and_provisions + policyholders_funds",
+        "operands": {
+          "capital": 557.97,
+          "employees_stock_options": 1117.2,
+          "reserves_and_surplus": 287762.33,
+          "minority_interest": 860.26,
+          "deposits": 1882663.25,
+          "borrowings": 256548.66,
+          "other_liabilities_and_provisions": 100922.77
+        },
+        "calculated_value": 2530432.44,
+        "reported_value": 2530432.44,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_assets_total_check",
+        "formula": "cash_and_balances_with_rbi + balances_with_banks_and_money_at_call + investments + advances + fixed_assets + other_assets + goodwill_on_consolidation",
+        "operands": {
+          "cash_and_balances_with_rbi": 117189.28,
+          "balances_with_banks_and_money_at_call": 79958.53,
+          "investments": 511581.71,
+          "advances": 1661949.29,
+          "fixed_assets": 8282.56,
+          "other_assets": 151322.28
+        },
+        "calculated_value": 2530432.44,
+        "reported_value": 2530432.44,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_balance_sheet_equation_check",
+        "formula": "total_capital_and_liabilities == total_assets",
+        "operands": {
+          "total_capital_and_liabilities": 2530432.44
+        },
+        "calculated_value": 2530432.44,
+        "reported_value": 2530432.44,
+        "variance": 0.0,
+        "status": "PASS"
+      }
+    ],
+    "overall_status": "PASS",
+    "issues": []
+  },
+  "processing_metadata": {
+    "ocr_used": false,
+    "processed_at": "2026-09-12T01:28:17.066382+00:00",
+    "processing_time_ms": 2
+  }
+}

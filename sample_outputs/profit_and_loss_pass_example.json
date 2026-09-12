@@ -1,0 +1,326 @@
+{
+  "document_name": "Consolidated Profit & Loss 2024.pdf",
+  "document_type": "profit_and_loss",
+  "processing_status": "PASS",
+  "file_validation": {
+    "file_type": "application/pdf",
+    "is_supported": true,
+    "is_readable": true,
+    "page_count": 1,
+    "status": "PASS"
+  },
+  "extracted_data": {
+    "period_current": {
+      "value": "FY2023-24",
+      "page_number": 1,
+      "source_text": "Year ended March 31, 2024"
+    },
+    "period_prior": {
+      "value": "FY2022-23",
+      "page_number": 1,
+      "source_text": "Year ended March 31, 2023"
+    },
+    "currency_unit": {
+      "value": "INR crore",
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_interest_earned": {
+      "value": 283649.02,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_other_income": {
+      "value": 124345.75,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_total_income": {
+      "value": 407994.77,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_interest_expended": {
+      "value": 154138.55,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_operating_expenses": {
+      "value": 152269.34,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_provisions_and_contingencies": {
+      "value": 36140.38,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_total_expenditure": {
+      "value": 342548.27,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_net_profit_before_minority_interest": {
+      "value": 65446.5,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_minority_interest": {
+      "value": 1384.46,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_net_profit_attributable_to_group": {
+      "value": 64062.04,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_brought_forward_profit": {
+      "value": 120369.35,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_addition_on_amalgamation": {
+      "value": 3570.1,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_total_profit": {
+      "value": 188001.49,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_interest_earned": {
+      "value": 170754.05,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_other_income": {
+      "value": 33912.05,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_total_income": {
+      "value": 204666.1,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_interest_expended": {
+      "value": 77779.94,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_operating_expenses": {
+      "value": 51533.69,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_provisions_and_contingencies": {
+      "value": 29203.77,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_total_expenditure": {
+      "value": 158517.4,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_net_profit_before_minority_interest": {
+      "value": 46148.7,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_minority_interest": {
+      "value": 151.59,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_net_profit_attributable_to_group": {
+      "value": 45997.11,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_brought_forward_profit": {
+      "value": 99062.77,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_addition_on_amalgamation": {
+      "value": null,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_total_profit": {
+      "value": 145059.88,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_basic_eps": {
+      "value": 90.42,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "current_diluted_eps": {
+      "value": 90.01,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_basic_eps": {
+      "value": 82.64,
+      "page_number": 1,
+      "source_text": "test"
+    },
+    "prior_diluted_eps": {
+      "value": 82.27,
+      "page_number": 1,
+      "source_text": "test"
+    }
+  },
+  "line_items": [
+    {
+      "section": "Appropriations",
+      "label": "Transfer to Statutory Reserve",
+      "current_year": 15684.72,
+      "prior_year": 11445.96
+    },
+    {
+      "section": "Appropriations",
+      "label": "Transfer to General Reserve",
+      "current_year": 6081.23,
+      "prior_year": 4410.87
+    }
+  ],
+  "validation": {
+    "checks": [
+      {
+        "name": "current_total_income_check",
+        "formula": "interest_earned + other_income",
+        "operands": {
+          "interest_earned": 283649.02,
+          "other_income": 124345.75
+        },
+        "calculated_value": 407994.77,
+        "reported_value": 407994.77,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_total_expenditure_check",
+        "formula": "interest_expended + operating_expenses + provisions_and_contingencies",
+        "operands": {
+          "interest_expended": 154138.55,
+          "operating_expenses": 152269.34,
+          "provisions_and_contingencies": 36140.38
+        },
+        "calculated_value": 342548.27,
+        "reported_value": 342548.27,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_net_profit_before_minority_check",
+        "formula": "total_income - total_expenditure",
+        "operands": {
+          "total_income": 407994.77,
+          "total_expenditure": 342548.27
+        },
+        "calculated_value": 65446.5,
+        "reported_value": 65446.5,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_net_profit_attributable_to_group_check",
+        "formula": "net_profit_before_minority_interest - minority_interest",
+        "operands": {
+          "net_profit_before_minority_interest": 65446.5,
+          "minority_interest": 1384.46
+        },
+        "calculated_value": 64062.04,
+        "reported_value": 64062.04,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "current_total_profit_check",
+        "formula": "net_profit_attributable_to_group + brought_forward_profit + addition_on_amalgamation",
+        "operands": {
+          "net_profit_attributable_to_group": 64062.04,
+          "brought_forward_profit": 120369.35
+        },
+        "calculated_value": 188001.49,
+        "reported_value": 188001.49,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_total_income_check",
+        "formula": "interest_earned + other_income",
+        "operands": {
+          "interest_earned": 170754.05,
+          "other_income": 33912.05
+        },
+        "calculated_value": 204666.1,
+        "reported_value": 204666.1,
+        "variance": -0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_total_expenditure_check",
+        "formula": "interest_expended + operating_expenses + provisions_and_contingencies",
+        "operands": {
+          "interest_expended": 77779.94,
+          "operating_expenses": 51533.69,
+          "provisions_and_contingencies": 29203.77
+        },
+        "calculated_value": 158517.4,
+        "reported_value": 158517.4,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_net_profit_before_minority_check",
+        "formula": "total_income - total_expenditure",
+        "operands": {
+          "total_income": 204666.1,
+          "total_expenditure": 158517.4
+        },
+        "calculated_value": 46148.7,
+        "reported_value": 46148.7,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_net_profit_attributable_to_group_check",
+        "formula": "net_profit_before_minority_interest - minority_interest",
+        "operands": {
+          "net_profit_before_minority_interest": 46148.7,
+          "minority_interest": 151.59
+        },
+        "calculated_value": 45997.11,
+        "reported_value": 45997.11,
+        "variance": 0.0,
+        "status": "PASS"
+      },
+      {
+        "name": "prior_total_profit_check",
+        "formula": "net_profit_attributable_to_group + brought_forward_profit + addition_on_amalgamation",
+        "operands": {
+          "net_profit_attributable_to_group": 45997.11,
+          "brought_forward_profit": 99062.77
+        },
+        "calculated_value": 145059.88,
+        "reported_value": 145059.88,
+        "variance": 0.0,
+        "status": "PASS"
+      }
+    ],
+    "overall_status": "PASS",
+    "issues": []
+  },
+  "processing_metadata": {
+    "ocr_used": false,
+    "processed_at": "2026-09-12T01:28:17.076282+00:00",
+    "processing_time_ms": 2
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "document_name": "partial_scan_profit_and_loss.pdf",
+  "document_type": "profit_and_loss",
+  "processing_status": "PASS",
+  "file_validation": {
+    "file_type": "application/pdf",
+    "is_supported": true,
+    "is_readable": true,
+    "page_count": 1,
+    "status": "PASS"
+  },
+  "extracted_data": {
+    "period_current": {
+      "value": "FY2025-26",
+      "page_number": 1,
+      "source_text": "For the year ended 31 March 2026"
+    },
+    "period_prior": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "currency_unit": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_interest_earned": {
+      "value": 500000.0,
+      "page_number": 1,
+      "source_text": "Revenue from operations: 5,00,000"
+    },
+    "current_other_income": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_total_income": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_interest_expended": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_operating_expenses": {
+      "value": 100000.0,
+      "page_number": 1,
+      "source_text": "Operating expenses: 1,00,000"
+    },
+    "current_provisions_and_contingencies": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_total_expenditure": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_net_profit_before_minority_interest": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_minority_interest": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_net_profit_attributable_to_group": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_brought_forward_profit": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    },
+    "current_total_profit": {
+      "value": null,
+      "page_number": null,
+      "source_text": null
+    }
+  },
+  "line_items": [],
+  "validation": {
+    "checks": [
+      {
+        "name": "current_total_income_check",
+        "formula": "interest_earned + other_income",
+        "operands": {
+          "interest_earned": 500000.0,
+          "other_income": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "current_total_expenditure_check",
+        "formula": "interest_expended + operating_expenses + provisions_and_contingencies",
+        "operands": {
+          "interest_expended": null,
+          "operating_expenses": 100000.0,
+          "provisions_and_contingencies": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "current_net_profit_before_minority_check",
+        "formula": "total_income - total_expenditure",
+        "operands": {
+          "total_income": null,
+          "total_expenditure": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "current_net_profit_attributable_to_group_check",
+        "formula": "net_profit_before_minority_interest - minority_interest",
+        "operands": {
+          "net_profit_before_minority_interest": null,
+          "minority_interest": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "current_total_profit_check",
+        "formula": "net_profit_attributable_to_group + brought_forward_profit + addition_on_amalgamation",
+        "operands": {
+          "net_profit_attributable_to_group": null,
+          "brought_forward_profit": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "prior_total_income_check",
+        "formula": "interest_earned + other_income",
+        "operands": {
+          "interest_earned": null,
+          "other_income": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "prior_total_expenditure_check",
+        "formula": "interest_expended + operating_expenses + provisions_and_contingencies",
+        "operands": {
+          "interest_expended": null,
+          "operating_expenses": null,
+          "provisions_and_contingencies": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "prior_net_profit_before_minority_check",
+        "formula": "total_income - total_expenditure",
+        "operands": {
+          "total_income": null,
+          "total_expenditure": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "prior_net_profit_attributable_to_group_check",
+        "formula": "net_profit_before_minority_interest - minority_interest",
+        "operands": {
+          "net_profit_before_minority_interest": null,
+          "minority_interest": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      },
+      {
+        "name": "prior_total_profit_check",
+        "formula": "net_profit_attributable_to_group + brought_forward_profit + addition_on_amalgamation",
+        "operands": {
+          "net_profit_attributable_to_group": null,
+          "brought_forward_profit": null
+        },
+        "calculated_value": null,
+        "reported_value": null,
+        "variance": null,
+        "status": "NOT_APPLICABLE"
+      }
+    ],
+    "overall_status": "NOT_APPLICABLE",
+    "issues": []
+  },
+  "processing_metadata": {
+    "ocr_used": false,
+    "processed_at": "2026-09-12T01:28:34.403590+00:00",
+    "processing_time_ms": 2
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "EMPTY_OR_CORRUPTED_FILE",
+    "message": "The uploaded file is empty."
+  }
+}
