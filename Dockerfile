@@ -19,4 +19,4 @@ ENV PYTHONPATH=/app/backend
 ENV PORT=8000
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--timeout", "240", "app.main:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--worker-class", "gthread", "--workers", "1", "--threads", "4", "--timeout", "240", "app.main:app"]
