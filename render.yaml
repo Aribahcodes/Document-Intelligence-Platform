@@ -1,0 +1,29 @@
+﻿# Render Blueprint - see https://render.com/docs/blueprint-spec
+# Deploys the single Flask service (frontend + API) from the Dockerfile
+# at the repo root. Create a Render account, connect this GitHub repo,
+# and Render will detect this file automatically ("New +" -> "Blueprint").
+#
+# Environment variables marked sync: false must be set manually in the
+# Render dashboard (Environment tab) - NOT committed to source control.
+services:
+  - type: web
+    name: document-intelligence-platform
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.6-flash
+      - key: DATABASE_URL
+        value: sqlite:////app/backend/data/app.db
+      - key: MAX_UPLOAD_SIZE_BYTES
+        value: "15728640"
+      - key: MAX_PAGE_COUNT
+        value: "3"
