@@ -1,156 +1,170 @@
 ﻿{% extends "base.html" %}
-{% block title %}{{ result.document_name }} - Document Intelligence{% endblock %}
+{% block title %}Document result - Document Intelligence{% endblock %}
 {% block content %}
 
-<a href="{{ url_for('frontend.dashboard') }}" class="d-inline-block mb-3">&larr; Back to dashboard</a>
-
-<div class="d-flex justify-content-between align-items-start mb-1">
-  <h1 class="h3">{{ result.document_name }}</h1>
-  <span class="badge status-{{ result.processing_status }} fs-6">{{ result.processing_status }}</span>
-</div>
-<p class="text-muted">
-  {{ result.document_type }}
-  {% if result.processing_metadata %}
-    &middot; processed {{ result.processing_metadata.processed_at }}
-    {% if result.processing_metadata.ocr_used %}&middot; OCR used{% endif %}
-  {% endif %}
-</p>
-
-{% if result.file_validation %}
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="h6 mb-3">File validation</h2>
-    <table class="table table-sm mb-0">
-      <tbody>
-        {% for key, value in result.file_validation.items() %}
-        <tr>
-          <td class="text-muted" style="width: 34%">{{ key }}</td>
-          <td class="font-monospace">{{ value }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+<div class="container-fluid px-4 py-4">
+  <a href="{{ url_for('frontend.dashboard') }}" class="d-inline-block mb-3">&larr; Back to dashboard</a>
+  <div id="result-root">
+    <p class="text-body-secondary">Loading result...</p>
   </div>
 </div>
-{% endif %}
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="h6 mb-3">Extracted fields</h2>
-    {% if result.extracted_data %}
-    <table class="table table-sm mb-0">
-      <tbody>
-        {% for field, info in result.extracted_data.items() %}
-        <tr class="{{ 'text-muted fst-italic' if info.value is none else '' }}">
-          <td class="text-muted" style="width: 34%">{{ field }}</td>
+{% endblock %}
+{% block scripts %}
+<script>
+  const SLUG = "{{ slug }}";
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    const div = document.createElement("div");
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+
+  function renderKeyValueTable(obj) {
+    const entries = Object.entries(obj || {});
+    if (entries.length === 0) return '<p class="text-body-secondary mb-0">None.</p>';
+    const rows = entries.map(([key, value]) => `
+      <tr>
+        <td class="text-body-secondary" style="width: 34%">${escapeHtml(key)}</td>
+        <td class="font-monospace">${escapeHtml(value)}</td>
+      </tr>`).join("");
+    return `<table class="table table-sm mb-0"><tbody>${rows}</tbody></table>`;
+  }
+
+  function renderExtractedData(extractedData) {
+    const entries = Object.entries(extractedData || {});
+    if (entries.length === 0) return '<p class="text-body-secondary mb-0">No fields extracted.</p>';
+
+    const rows = entries.map(([field, info]) => {
+      const missing = info.value === null || info.value === undefined;
+      const evidence = info.source_text
+        ? `<small class="d-block text-body-secondary">"${escapeHtml(info.source_text)}"${info.page_number ? ` - page ${info.page_number}` : ""}</small>`
+        : "";
+      return `
+        <tr class="${missing ? "text-body-secondary fst-italic" : ""}">
+          <td class="text-body-secondary" style="width: 34%">${escapeHtml(field)}</td>
           <td class="font-monospace">
-            {% if info.value is none %}
-              null (not found in document)
-            {% else %}
-              {{ info.value }}
-            {% endif %}
-            {% if info.source_text %}
-              <small class="d-block text-muted fst-normal">
-                "{{ info.source_text }}"{% if info.page_number %} - page {{ info.page_number }}{% endif %}
-              </small>
-            {% endif %}
+            ${missing ? "null (not found in document)" : escapeHtml(info.value)}
+            ${evidence}
           </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p class="text-muted mb-0">No fields extracted.</p>
-    {% endif %}
-  </div>
-</div>
+        </tr>`;
+    }).join("");
 
-{% if result.line_items %}
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="h6 mb-3">Line items</h2>
-    <div class="table-responsive">
-      <table class="table table-sm table-striped mb-0">
-        <thead>
-          <tr>
-            {% for col in line_item_columns %}
-            <th>{{ col }}</th>
-            {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in result.line_items %}
-          <tr>
-            {% for col in line_item_columns %}
-            <td class="font-monospace">{{ item.get(col, '-') if item.get(col, None) is not none else '-' }}</td>
-            {% endfor %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-{% endif %}
+    return `<table class="table table-sm mb-0"><tbody>${rows}</tbody></table>`;
+  }
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h2 class="h6 mb-3">
-      Financial validation
-      {% if result.validation %}
-      <span class="badge status-{{ result.validation.overall_status }}">{{ result.validation.overall_status }}</span>
-      {% endif %}
-    </h2>
+  function renderLineItems(lineItems) {
+    if (!lineItems || lineItems.length === 0) return "";
+    const columns = [...new Set(lineItems.flatMap(item => Object.keys(item)))];
+    const header = columns.map(c => `<th>${escapeHtml(c)}</th>`).join("");
+    const rows = lineItems.map(item => {
+      const cells = columns.map(c => `<td class="font-monospace">${item[c] === null || item[c] === undefined ? "-" : escapeHtml(item[c])}</td>`).join("");
+      return `<tr>${cells}</tr>`;
+    }).join("");
+    return `
+      <div class="card mb-4"><div class="card-body">
+        <h2 class="h6 mb-3">Line items</h2>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped mb-0">
+            <thead><tr>${header}</tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div></div>`;
+  }
 
-    {% if result.validation and result.validation.checks %}
-    <div class="table-responsive">
-      <table class="table table-sm mb-0">
-        <thead>
-          <tr>
-            <th>Check</th>
-            <th>Formula</th>
-            <th>Calculated</th>
-            <th>Reported</th>
-            <th>Variance</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for check in result.validation.checks %}
-          <tr class="{{ 'table-danger' if check.status == 'FAIL' else '' }}">
-            <td>{{ check.name }}</td>
-            <td class="font-monospace small">{{ check.formula }}</td>
-            <td class="font-monospace">{{ check.calculated_value if check.calculated_value is not none else '-' }}</td>
-            <td class="font-monospace">{{ check.reported_value if check.reported_value is not none else '-' }}</td>
-            <td class="font-monospace">{{ check.variance if check.variance is not none else '-' }}</td>
-            <td><span class="badge status-{{ check.status }}">{{ check.status }}</span></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+  function renderValidation(validation) {
+    if (!validation || !validation.checks || validation.checks.length === 0) {
+      return `<h2 class="h6 mb-3">Financial validation</h2><p class="text-body-secondary mb-0">No applicable validation checks for this document.</p>`;
+    }
+    const rows = validation.checks.map(c => `
+      <tr class="${c.status === "FAIL" ? "table-danger" : ""}">
+        <td>${escapeHtml(c.name)}</td>
+        <td class="font-monospace small">${escapeHtml(c.formula)}</td>
+        <td class="font-monospace">${c.calculated_value === null ? "-" : escapeHtml(c.calculated_value)}</td>
+        <td class="font-monospace">${c.reported_value === null ? "-" : escapeHtml(c.reported_value)}</td>
+        <td class="font-monospace">${c.variance === null ? "-" : escapeHtml(c.variance)}</td>
+        <td><span class="badge status-${c.status}">${c.status}</span></td>
+      </tr>`).join("");
+    const issues = (validation.issues || []).length
+      ? `<ul class="text-danger mt-3 mb-0">${validation.issues.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`
+      : "";
+    return `
+      <h2 class="h6 mb-3">Financial validation <span class="badge status-${validation.overall_status}">${validation.overall_status}</span></h2>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0">
+          <thead><tr><th>Check</th><th>Formula</th><th>Calculated</th><th>Reported</th><th>Variance</th><th>Status</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      ${issues}`;
+  }
 
-    {% if result.validation.issues %}
-    <ul class="text-danger mt-3 mb-0">
-      {% for issue in result.validation.issues %}
-      <li>{{ issue }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+  async function loadResult() {
+    const root = document.getElementById("result-root");
+    try {
+      // Step 1: resolve the clean slug back to the real document name by
+      // fetching the list and matching on slugify() - the API itself is
+      // still keyed by real document names (spec section 5), the slug is
+      // purely a frontend routing convenience.
+      const listRes = await fetch(`${API_BASE}/documents`);
+      const listData = await listRes.json();
+      const match = (listData.documents || []).find(doc => slugify(doc.document_name) === SLUG);
 
-    {% else %}
-    <p class="text-muted mb-0">No applicable validation checks for this document.</p>
-    {% endif %}
-  </div>
-</div>
+      if (!match) {
+        root.innerHTML = `<p class="text-danger">No processed result found for this document.</p>`;
+        return;
+      }
 
-<div class="mb-5">
-  <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#rawJson">
-    View raw JSON
-  </button>
-  <div class="collapse mt-2" id="rawJson">
-    <pre class="bg-dark text-light p-3 rounded"><code>{{ result | tojson(indent=2) }}</code></pre>
-  </div>
-</div>
+      // Step 2: fetch the full structured result by real document name.
+      const res = await fetch(`${API_BASE}/documents/${encodeURIComponent(match.document_name)}`);
+      const data = await res.json();
+      if (!res.ok) {
+        root.innerHTML = `<p class="text-danger">${escapeHtml((data.error && data.error.message) || "Could not load this document.")}</p>`;
+        return;
+      }
 
+      root.innerHTML = `
+        <div class="d-flex justify-content-between align-items-start mb-1">
+          <h1 class="h3">${escapeHtml(data.document_name)}</h1>
+          <span class="badge status-${data.processing_status} fs-6">${data.processing_status}</span>
+        </div>
+        <p class="text-body-secondary">
+          ${escapeHtml(data.document_type)}
+          ${data.processing_metadata ? ` &middot; processed ${escapeHtml(data.processing_metadata.processed_at)}` : ""}
+          ${data.processing_metadata && data.processing_metadata.ocr_used ? " &middot; OCR used" : ""}
+        </p>
+
+        <div class="card mb-4"><div class="card-body">
+          <h2 class="h6 mb-3">File validation</h2>
+          ${renderKeyValueTable(data.file_validation)}
+        </div></div>
+
+        <div class="card mb-4"><div class="card-body">
+          <h2 class="h6 mb-3">Extracted fields</h2>
+          ${renderExtractedData(data.extracted_data)}
+        </div></div>
+
+        ${renderLineItems(data.line_items)}
+
+        <div class="card mb-4"><div class="card-body">
+          ${renderValidation(data.validation)}
+        </div></div>
+
+        <div class="mb-5">
+          <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#rawJson">
+            View raw JSON
+          </button>
+          <div class="collapse mt-2" id="rawJson">
+            <pre class="bg-body-tertiary p-3 rounded"><code>${escapeHtml(JSON.stringify(data, null, 2))}</code></pre>
+          </div>
+        </div>`;
+    } catch (err) {
+      root.innerHTML = `<p class="text-danger">Error loading result: ${escapeHtml(err.message)}</p>`;
+    }
+  }
+
+  loadResult();
+</script>
 {% endblock %}

@@ -2,64 +2,146 @@
 {% block title %}Dashboard - Document Intelligence{% endblock %}
 {% block content %}
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h1 class="card-title h4 mb-3">Process a document</h1>
-    <form method="POST" action="{{ url_for('frontend.dashboard') }}" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="document_type" class="form-label">Document type</label>
-        <select class="form-select" id="document_type" name="document_type" required>
-          <option value="invoice">Invoice</option>
-          <option value="balance_sheet">Balance Sheet</option>
-          <option value="profit_and_loss">Profit &amp; Loss</option>
-          <option value="cash_flow_statement">Cash Flow Statement</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="file" class="form-label">File (PDF / JPG / PNG, up to 3 pages)</label>
-        <input class="form-control" type="file" id="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Process document</button>
-    </form>
-  </div>
-</div>
+<div class="container-fluid px-4 py-4">
+  <div class="d-flex">
 
-<div class="card">
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="h5 mb-0">Processed documents</h2>
-      <a href="{{ url_for('frontend.dashboard') }}" class="btn btn-outline-secondary btn-sm">Refresh</a>
+    <!-- Sidebar: two tabs, switched by Bootstrap's own JS via data-bs-toggle="pill". -->
+    <div class="nav flex-column nav-pills me-4" style="min-width: 180px" role="tablist" aria-orientation="vertical">
+      <button class="nav-link active mb-1 text-start" data-bs-toggle="pill" data-bs-target="#tab-process"
+              type="button" role="tab" aria-selected="true">
+        Process document
+      </button>
+      <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#tab-history"
+              type="button" role="tab" aria-selected="false" id="history-tab-btn">
+        History
+        <span class="badge text-bg-secondary ms-1" id="history-count">0</span>
+      </button>
     </div>
 
-    {% if documents %}
-    <table class="table table-hover align-middle">
-      <thead>
-        <tr>
-          <th>Document name</th>
-          <th>Type</th>
-          <th>Status</th>
-          <th>Processed at</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for doc in documents %}
-        <tr>
-          <td>
-            <a href="{{ url_for('frontend.document_result', document_name=doc.document_name) }}">
-              {{ doc.document_name }}
-            </a>
-          </td>
-          <td>{{ doc.document_type }}</td>
-          <td><span class="badge status-{{ doc.processing_status }}">{{ doc.processing_status }}</span></td>
-          <td>{{ doc.processed_at }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p class="text-muted mb-0">No documents processed yet. Upload one above to get started.</p>
-    {% endif %}
+    <div class="tab-content flex-grow-1">
+
+      <!-- Tab 1: Process a document - centered card, centered text -->
+      <div class="tab-pane fade show active" id="tab-process" role="tabpanel">
+        <div class="d-flex justify-content-center">
+          <div class="card" style="max-width: 520px; width: 100%">
+            <div class="card-body text-center">
+              <h1 class="card-title h4 mb-3">Process a document</h1>
+              <form id="upload-form" class="text-start">
+                <div class="mb-3">
+                  <label for="document_type" class="form-label">Document type</label>
+                  <select class="form-select" id="document_type" name="document_type" required>
+                    <option value="invoice">Invoice</option>
+                    <option value="balance_sheet">Balance Sheet</option>
+                    <option value="profit_and_loss">Profit &amp; Loss</option>
+                    <option value="cash_flow_statement">Cash Flow Statement</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="file" class="form-label">File (PDF / JPG / PNG, up to 3 pages)</label>
+                  <input class="form-control" type="file" id="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" id="process-btn">
+                  Process document
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: History -->
+      <div class="tab-pane fade" id="tab-history" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h5 mb-0">Processed documents</h2>
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="refresh-btn">Refresh</button>
+        </div>
+        <div id="history-body">
+          <p class="text-body-secondary mb-0">Loading...</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
+{% endblock %}
+{% block scripts %}
+<script>
+  function formatTimestamp(iso) {
+    try { return new Date(iso).toLocaleString(); } catch { return iso; }
+  }
+
+  // --- History tab: fetch GET /api/v1/documents and render the table ---
+  async function loadHistory() {
+    const body = document.getElementById("history-body");
+    try {
+      const res = await fetch(`${API_BASE}/documents`);
+      const data = await res.json();
+      const docs = data.documents || [];
+      document.getElementById("history-count").textContent = docs.length;
+
+      if (docs.length === 0) {
+        body.innerHTML = '<p class="text-body-secondary mb-0">No documents processed yet. Upload one from the "Process document" tab.</p>';
+        return;
+      }
+
+      const rows = docs.map(doc => `
+        <tr>
+          <td><a href="/document/${slugify(doc.document_name)}">${doc.document_name}</a></td>
+          <td>${doc.document_type}</td>
+          <td><span class="badge status-${doc.processing_status}">${doc.processing_status}</span></td>
+          <td>${formatTimestamp(doc.processed_at)}</td>
+        </tr>`).join("");
+
+      body.innerHTML = `
+        <table class="table table-hover align-middle">
+          <thead><tr><th>Document name</th><th>Type</th><th>Status</th><th>Processed at</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    } catch (err) {
+      body.innerHTML = `<p class="text-danger mb-0">Could not load documents: ${err.message}</p>`;
+    }
+  }
+
+  document.getElementById("refresh-btn").addEventListener("click", loadHistory);
+  document.getElementById("history-tab-btn").addEventListener("shown.bs.tab", loadHistory);
+  loadHistory();  // populate the count badge and cache the list even before the tab is opened
+
+  // --- Process tab: fetch POST /api/v1/documents/process ---
+  document.getElementById("upload-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const btn = document.getElementById("process-btn");
+    const fileInput = document.getElementById("file");
+    const documentType = document.getElementById("document_type").value;
+    if (!fileInput.files.length) return;
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    formData.append("document_type", documentType);
+
+    btn.disabled = true;
+    btn.textContent = "Processing - this can take up to a minute...";
+
+    try {
+      const res = await fetch(`${API_BASE}/documents/process`, { method: "POST", body: formData });
+      const data = await res.json();
+
+      if (!res.ok) {
+        const message = (data.error && data.error.message) || "Processing failed.";
+        showToast(message, "danger");
+        btn.disabled = false;
+        btn.textContent = "Process document";
+        return;
+      }
+
+      showToast(`"${data.document_name}" processed - status: ${data.processing_status}`, "success");
+      window.location.href = `/document/${slugify(data.document_name)}`;
+    } catch (err) {
+      showToast(`Network error: ${err.message}`, "danger");
+      btn.disabled = false;
+      btn.textContent = "Process document";
+    }
+  });
+</script>
 {% endblock %}

@@ -7,25 +7,65 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/custom.css') }}">
 </head>
-<body>
-  <nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-      <a class="navbar-brand" href="{{ url_for('frontend.dashboard') }}">Document Intelligence Platform</a>
+<body class="m-0">
+  <nav class="navbar navbar-dark bg-black py-2">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand mb-0" href="{{ url_for('frontend.dashboard') }}">Document Intelligence Platform</a>
     </div>
   </nav>
 
-  <div class="container mb-5">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+  <!-- Toast container: fixed top-right. Empty by default now - JS
+       (showToast, below) creates and shows toasts here dynamically,
+       since there's no more server-side flash() round trip driving
+       this once the frontend calls the API directly via fetch(). -->
+  <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080"></div>
 
-    {% block content %}{% endblock %}
-  </div>
+  {% block content %}{% endblock %}
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const API_BASE = "/api/v1";
+
+    /**
+     * Turns a raw filename like "Consolidated Cash Flow Statement 2018.pdf"
+     * into a clean URL slug like "consolidated-cash-flow-statement-2018".
+     * Deliberately mirrors backend/app/api/routes/frontend.py's old
+     * _slugify() algorithm exactly (lowercase, non-alphanumeric runs
+     * collapsed to a single hyphen, extension stripped, trimmed) so a
+     * document processed via the API always resolves to the same slug
+     * a human would expect from the filename.
+     */
+    function slugify(documentName) {
+      const stem = documentName.replace(/\.[^/.]+$/, "");
+      const slug = stem.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      return slug || "document";
+    }
+
+    /**
+     * Creates and shows one Bootstrap toast, top-right, auto-dismissing
+     * after 5 seconds with its own close button - the dynamic
+     * equivalent of what Flask's flash() + base.html used to render
+     * server-side.
+     */
+    function showToast(message, category) {
+      const container = document.getElementById("toast-container");
+      const toastEl = document.createElement("div");
+      toastEl.className = `toast align-items-center text-bg-${category} border-0`;
+      toastEl.setAttribute("role", "alert");
+      toastEl.setAttribute("aria-live", "assertive");
+      toastEl.setAttribute("aria-atomic", "true");
+      toastEl.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body"></div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>`;
+      toastEl.querySelector(".toast-body").textContent = message;  // textContent, not innerHTML - avoids injecting markup from API error messages
+      container.appendChild(toastEl);
+      const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 5000 });
+      toast.show();
+      toastEl.addEventListener("hidden.bs.toast", () => toastEl.remove());
+    }
+  </script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

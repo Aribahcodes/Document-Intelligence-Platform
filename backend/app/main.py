@@ -78,4 +78,4 @@ def _register_error_handlers(app: Flask, logger) -> None:
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=(Config.ENV == "development"))
+    app.run(host="0.0.0.0", port=8000, debug=(Config.ENV == "development"), reloader_type="stat")
